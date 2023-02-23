@@ -3,3 +3,4 @@
 /terraform/.terraform.lock.hcl
 functions/package-lock.json
 functions/firebase-debug.log
+.firebase/
