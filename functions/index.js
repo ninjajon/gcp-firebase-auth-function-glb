@@ -19,11 +19,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const express = require('express');
-const cookieParser = require('cookie-parser')();
-//const cors = require('cors');//({origin: true});
-const cors = require('cors')({
-  origin: true,
-});
+const cors = require('cors')({origin: true,});
 const app = express();
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -41,33 +37,29 @@ const validateFirebaseIdToken = async (req, res, next) => {
       'Authorization: Bearer <Firebase ID Token>',
       'or by passing a "__session" cookie.'
     );
-    res.status(403).send('Unauthorized-1');
+    res.status(403).send('Firebase Token not present in Authorization header');
     return;
   }
 
   let idToken;
   functions.logger.log(req.headers);
-  if (req.headers.firebasetoken && req.headers.firebasetoken.startsWith('Bearer ')) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     functions.logger.log('Found "FirebaseToken" header');
     // Read the ID Token from the Authorization header.
-    idToken = req.headers.firebasetoken.split(' ')[1];
+    idToken = req.headers.authorization.split(' ')[1];
   } else {
-    // No cookie
-    res.status(403).send('Unauthorized-2');
+    res.status(403).send('Unable to read Firebase Token');
     return;
   }
 
   try {
-    functions.logger.log('just before decoding');
-    functions.logger.log('idToken - New = ', idToken);
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    functions.logger.log('ID Token correctly decoded', decodedIdToken);
     req.user = decodedIdToken;
     next();
     return;
   } catch (error) {
     functions.logger.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized-3');
+    res.status(403).send('Error while verifying Firebase ID token');
     return;
   }
 };
@@ -75,16 +67,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
 app.use(cors);
 app.use(validateFirebaseIdToken);
 app.get('*/hello', (req, res) => {
-  // @ts-ignore
-  // res.set('Access-Control-Allow-Origin', '*');
-
-  // if (req.method === 'OPTIONS') {
-  //   // Send response to OPTIONS requests
-  //   res.set('Access-Control-Allow-Methods', 'GET');
-  //   res.set('Access-Control-Allow-Headers', 'Content-Type', 'authorization', 'firebasetoken');
-  //   res.set('Access-Control-Max-Age', '3600');
-  //   res.status(204).send('');
-  // } else {
   cors(req, res, () => {
     res.send(`Hello ${req.user.name}`);
   })

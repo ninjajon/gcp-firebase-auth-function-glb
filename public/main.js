@@ -22,9 +22,7 @@ function Demo() {
     this.signInButton = document.getElementById('demo-sign-in-button');
     this.signOutButton = document.getElementById('demo-sign-out-button');
     this.responseContainer = document.getElementById('demo-response');
-    //this.responseContainerCookie = document.getElementById('demo-response-cookie');
     this.urlContainer = document.getElementById('demo-url');
-    this.urlContainerCookie = document.getElementById('demo-url-cookie');
     //this.helloUserUrl = window.location.href + 'hello'; 
     //this.helloUserUrl = 'https://us-central1-jo-firebase-auth-fct-glb-jxba.cloudfunctions.net/app/hello';
     this.helloUserUrl = 'https://fct2.slhcm.com/app/hello';
@@ -45,7 +43,6 @@ Demo.prototype.onAuthStateChanged = function(user) {
     this.signedOutCard.style.display = 'none';
     this.signedInCard.style.display = 'block';
     this.startFunctionsRequest();
-    //this.startFunctionsCookieRequest();
   } else {
     this.signedOutCard.style.display = 'block';
     this.signedInCard.style.display = 'none';
@@ -60,8 +57,6 @@ Demo.prototype.signIn = function() {
 // Signs-out of Firebase.
 Demo.prototype.signOut = function() {
   firebase.auth().signOut();
-  // clear the __session cookie
-  document.cookie = '__session=';
 };
 
 // Does an authenticated request to a Firebase Functions endpoint using an Authorization header.
@@ -69,13 +64,7 @@ Demo.prototype.startFunctionsRequest = function() {
   firebase.auth()
   .signInWithPopup(new firebase.auth.GoogleAuthProvider())
   .then((result) => {
-    console.log('result:', result);
-    var credential = result.credential;
-    console.log('credential:', credential);
-    var googleIdToken = credential.idToken;
-    console.log('Google Access Token:', googleIdToken)
     firebase.auth().currentUser.getIdToken().then(function(token) {
-      console.log('Firbase token:', token)
       var req = new XMLHttpRequest();
       req.onload = function() {
         this.responseContainer.innerText = req.responseText;
@@ -84,29 +73,11 @@ Demo.prototype.startFunctionsRequest = function() {
         this.responseContainer.innerText = 'There was an error';
       }.bind(this);
       req.open('GET', this.helloUserUrl, true);
-      req.setRequestHeader('Authorization', 'Bearer ' + googleIdToken);
-      req.setRequestHeader('FirebaseToken', 'Bearer ' + token);
+      req.setRequestHeader('Authorization', 'Bearer ' + token);
       req.send();
     }.bind(this));
   })
-
-  // firebase.auth().currentUser.getIdToken().then(function(token) {
-  //   console.log('Sending request to', this.helloUserUrl, 'with ID token in Authorization header.');
-  //   console.log('Firbase token:', token)
-  //   console.log('currentUser:', firebase.auth().currentUser)  
-  //   console.log('auth:', firebase.auth().currentUser.auth)  
-  //   var req = new XMLHttpRequest();
-  //   req.onload = function() {
-  //     this.responseContainer.innerText = req.responseText;
-  //   }.bind(this);
-  //   req.onerror = function() {
-  //     this.responseContainer.innerText = 'There was an error';
-  //   }.bind(this);
-  //   req.open('GET', this.helloUserUrl, true);
-  //   req.setRequestHeader('Authorization', 'Bearer ' + token);
-  //   req.send();
-  // }.bind(this));
-};
+}
 
 // Load the demo.
 window.demo = new Demo();
