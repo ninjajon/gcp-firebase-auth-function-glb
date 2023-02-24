@@ -28,7 +28,6 @@ const app = express();
 // when decoded successfully, the ID Token content will be added as `req.user`.
 const validateFirebaseIdToken = async (req, res, next) => {
   functions.logger.log('Check if request is authorized with Firebase ID token');
-  functions.logger.log('authorization header:', req.headers.authorization)
 
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))) {
     functions.logger.error(
@@ -42,7 +41,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
   }
 
   let idToken;
-  functions.logger.log(req.headers);
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     functions.logger.log('Found "FirebaseToken" header');
     // Read the ID Token from the Authorization header.
@@ -75,4 +73,4 @@ app.get('*/hello', (req, res) => {
 // This HTTPS endpoint can only be accessed by your Firebase Users.
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
-exports.app = functions.https.onRequest(app);
+exports.app = functions.region('us-central1', 'northamerica-northeast1').https.onRequest(app);
