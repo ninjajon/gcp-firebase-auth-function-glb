@@ -18,7 +18,7 @@ This sample comes with a simple web-based UI whose code is in [public](public) d
     - Allowed ingress settings (Cloud Functions)). [Until we find a way to deploy a function with Firebase CLI to avoid this and only allow private & LB traffic in].
     - Domain restricted sharing. To allow allUsers access.
  1. Enable the **Google** Provider in the **Auth** section.
- 1. You must have the Firebase CLI installed. If you don't have it install it with `npm install -g firebase-tools` and then configure it with `firebase login`.
+ 1. You must have the Firebase CLI installed. If you don't have it install it with `npm install -g firebase-tools` and then configure it with `firebase login --no-localhost`.
  1. Configure the CLI locally by using `firebase use --add` and select your project in the list.
  1. Install dependencies locally by running: `cd functions; npm install; cd -`
 
