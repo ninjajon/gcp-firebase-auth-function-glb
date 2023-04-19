@@ -52,7 +52,9 @@ Demo.prototype.onAuthStateChanged = function(user) {
 // Initiates the sign-in flow using GoogleAuthProvider sign in in a popup.
 Demo.prototype.signIn = function() {
   //firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-  firebase.auth().signInWithPopup(new firebase.auth.OAuthProvider('oidc.slalomjo'));
+  firebase.auth().signInWithPopup(new firebase.auth.OAuthProvider('oidc.workspaceone'));
+  //firebase.auth().signInWithPopup(new firebase.auth.OAuthProvider('oidc.adsfdsf'));  
+  //firebase.auth().signInWithPopup(new firebase.auth.OAuthProvider('oidc.slalomjo'));
 };
 
 // Signs-out of Firebase.
@@ -63,7 +65,7 @@ Demo.prototype.signOut = function() {
 // Does an authenticated request to a Firebase Functions endpoint using an Authorization header.
 Demo.prototype.startFunctionsRequest = function() {
   firebase.auth()
-  .signInWithPopup(new firebase.auth.OAuthProvider('oidc.slalomjo'))
+  .signInWithPopup(new firebase.auth.OAuthProvider('oidc.workspaceone'))
   .then((result) => {
     firebase.auth().currentUser.getIdToken().then(function(token) {
       var req = new XMLHttpRequest();

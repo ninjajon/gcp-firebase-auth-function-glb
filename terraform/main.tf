@@ -1,4 +1,23 @@
-# VPC in the cloud
+module "vpc" {
+  source = "./modules/vpc"
+  providers = {
+    google = google.target
+  }
+  prefix = var.prefix
+}
+
+module "subnet_northamerica_northeast1" {
+  source = "./modules/subnet"
+  providers = {
+    google = google.target
+  }
+  subnet_name   = "${var.prefix}-subnet-nne1"
+  network       = module.vpc.vpc_id
+  ip_cidr_range = "10.10.0.0/24"
+  region        = "northamerica-northeast1"
+}
+
+
 module "neg_northamerica_northeast1" {
   source = "./modules/neg"
   providers = {

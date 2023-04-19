@@ -1,7 +1,7 @@
 resource "google_compute_backend_service" "default" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
   name                  = "${var.prefix}-be"
-  enable_cdn            = true
+  enable_cdn            = false
   protocol              = "HTTPS"
 
   backend {
