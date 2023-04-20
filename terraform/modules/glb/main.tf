@@ -8,9 +8,9 @@ resource "google_compute_backend_service" "default" {
     group = var.neg1_id
   }
 
-  backend {
-    group = var.neg2_id
-  }
+  # backend {
+  #   group = var.neg2_id
+  # }
 
   log_config {
     enable      = true
