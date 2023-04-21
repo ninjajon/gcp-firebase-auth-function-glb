@@ -17,18 +17,6 @@ module "subnet_northamerica_northeast1" {
   region        = "northamerica-northeast1"
 }
 
-module "psc_northamerica_northeast1" {
-  source = "./modules/psc"
-  providers = {
-    google = google.target
-  }
-  prefix        = var.prefix
-  region        = "northamerica-northeast1"
-  subnet_name = module.subnet_northamerica_northeast1.subnet_name
-  service_attachment_id = "projects/f369d20314d82c7bc-tp/regions/northamerica-northeast1/serviceAttachments/apigee-northamerica-northeast1-328o"
-  network = module.vpc.vpc_id
-}
-
 module "neg_northamerica_northeast1" {
   source = "./modules/neg"
   providers = {
