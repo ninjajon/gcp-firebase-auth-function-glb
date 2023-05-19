@@ -22,7 +22,6 @@ This sample comes with a simple web-based UI whose code is in [public](public) d
  1. Configure the CLI locally by using `firebase use --add` and select your project in the list.
  1. Install dependencies locally by running: `cd functions; npm install; cd -`
 
-
 ## Deploy and test
 
 This sample comes with a web-based UI for testing the function.

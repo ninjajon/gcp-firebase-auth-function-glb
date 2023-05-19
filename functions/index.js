@@ -15,12 +15,29 @@
  */
 'use strict';
 
-const functions = require('firebase-functions');
+// import from a specific subpackage
+//const {onRequest} = require('firebase-functions/v2/https');
+
+// import the entire v2 monolith
+const functions = require('firebase-functions/v2');
+//const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const express = require('express');
 const cors = require('cors')({origin: true,});
 const app = express();
+
+const validateAppCheckToken = async (req, res, next) => {
+  // Check App Check token
+  const appCheck = admin.appCheck();
+  try {
+    await appCheck.verifyToken(req.headers['x-firebase-appcheck-token']);
+  } catch (error) {
+    console.error('Invalid App Check token:', error);
+    res.status(403).send('Forbidden');
+    return;
+  }
+}
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -63,6 +80,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
 };
 
 app.use(cors);
+app.use(validateAppCheckToken)
 app.use(validateFirebaseIdToken);
 app.get('*/hello', (req, res) => {
   cors(req, res, () => {
@@ -73,4 +91,5 @@ app.get('*/hello', (req, res) => {
 // This HTTPS endpoint can only be accessed by your Firebase Users.
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
-exports.app = functions.region('us-central1', 'northamerica-northeast1').https.onRequest(app);
+//exports.app = functions.region('us-central1', 'northamerica-northeast1').https.onRequest(app);
+exports.app = functions.https.onRequest({region: ['us-central1', 'northamerica-northeast1']}, app);
