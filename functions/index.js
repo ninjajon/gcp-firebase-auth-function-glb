@@ -19,8 +19,8 @@
 //const {onRequest} = require('firebase-functions/v2/https');
 
 // import the entire v2 monolith
-const functions = require('firebase-functions/v2');
-//const functions = require('firebase-functions');
+//const functions = require('firebase-functions/v2');
+const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const express = require('express');
