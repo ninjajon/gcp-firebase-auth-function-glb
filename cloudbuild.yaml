@@ -34,13 +34,14 @@ steps:
   - |
       cd terraform; terraform apply -auto-approve; cd -
 
-- id: 'npm install'
-  name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args: ['cd functions; npm install; cd -'] 
-
 - id: 'firebase deploy'
-  name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args: ['firebase use --add jo-firebase-auth-fct-glb-jxba; firebase deploy'] 
-  
+  name: 'alpine'
+  entrypoint: 'sh'  
+  args: 
+  - '-c'
+  - | 
+      cd functions
+      npm install
+      cd -
+      firebase use --add jo-firebase-auth-fct-glb-jxba
+      firebase deploy
