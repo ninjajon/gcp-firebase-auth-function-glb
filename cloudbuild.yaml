@@ -33,15 +33,3 @@ steps:
   - '-c'
   - |
       cd terraform; terraform apply -auto-approve; cd -
-
-- id: 'firebase deploy'
-  name: 'alpine'
-  entrypoint: 'sh'  
-  args: 
-  - '-c'
-  - | 
-      cd functions
-      npm install
-      cd -
-      firebase use --add jo-firebase-auth-fct-glb-jxba
-      firebase deploy
