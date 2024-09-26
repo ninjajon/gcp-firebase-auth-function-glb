@@ -3,7 +3,7 @@ variable "prefix" {
 }
 
 variable "project" {
-  default = "jo-firebase-auth-fct-glb-jxba"
+  default = "jo-firebase-playground-yvjo"
 }
 
 variable "central_project_id" {
@@ -11,7 +11,7 @@ variable "central_project_id" {
 }
 
 variable "domain_name" {
-  default = "fct2.ninjajon.com"
+  default = "fct3.ninjajon.com"
 }
 
 variable "zone_name" {

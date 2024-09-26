@@ -8,7 +8,7 @@ terraform {
 
   backend "gcs" {
     bucket = "jo-terraform-states"
-    prefix = "firebase-lb"
+    prefix = "firebase-playground"
   }
 }
 
@@ -19,6 +19,6 @@ provider "google" {
 
 provider "google" {
   alias   = "target"
-  project = "jo-firebase-auth-fct-glb-jxba"
+  project = "jo-firebase-playground-yvjo"
   region  = "us-central1"
 }

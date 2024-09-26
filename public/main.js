@@ -25,7 +25,7 @@ function Demo() {
     this.urlContainer = document.getElementById('demo-url');
     //this.helloUserUrl = window.location.href + 'hello'; 
     //this.helloUserUrl = 'https://us-central1-jo-firebase-auth-fct-glb-jxba.cloudfunctions.net/app/hello';
-    this.helloUserUrl = 'https://fct2.ninjajon.com/app/hello';
+    this.helloUserUrl = 'https://fct3.ninjajon.com/app/hello';
     this.signedOutCard = document.getElementById('demo-signed-out-card');
     this.signedInCard = document.getElementById('demo-signed-in-card');
 

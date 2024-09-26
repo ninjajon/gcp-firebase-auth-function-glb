@@ -73,4 +73,11 @@ app.get('*/hello', (req, res) => {
 // This HTTPS endpoint can only be accessed by your Firebase Users.
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
-exports.app = functions.region('us-central1', 'northamerica-northeast1').https.onRequest(app);
+exports.app = functions
+  .region('us-central1', 'us-east4')
+  .runWith({ 
+    memory: '2GB', 
+    ingressSettings: 'ALLOW_INTERNAL_AND_GCLB',
+    serviceAccount: 'function-run-sa@jo-firebase-playground-yvjo.iam.gserviceaccount.com',
+  })
+  .https.onRequest(app);
